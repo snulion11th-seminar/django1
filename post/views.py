@@ -89,7 +89,8 @@ class PostListView(APIView):
         author = request.user
         title = request.data.get('title')
         content = request.data.get('content')
-        tag_ids = request.data.get('tags')
+        tag_ids = request.data.get('tags', [])
+
 
 
 ##django에서는 인증이 안된 유저는 anonymous user라고 값을 정해놨음. anonymous user는 is_authenticated가 false임.##
@@ -107,7 +108,7 @@ class PostListView(APIView):
 ### 이거 하는 이유는 미리 대처할 수 있는 거를 분기처리해주는 것. ###
         post = Post.objects.create(title=title, content=content, author=author)
         post.tags.set(tag_ids)
-        
+
         serializer = PostSerializer(post)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
         # return Response({
