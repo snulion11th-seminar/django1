@@ -88,9 +88,9 @@ class CommentListView(APIView):
         if not request.user.is_authenticated:
             return Response({"detail": "Authentication credentials not provided"}, status=status.HTTP_401_UNAUTHORIZED)
         try:
-          comment = Comment.objects.get(id=comment_id)
+            comment = Comment.objects.get(id=comment_id)
         except Comment.DoesNotExist:
-          return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
 
         if comment is None:
             return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
