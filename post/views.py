@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import Count
 
 # Create your views here.
 
@@ -74,7 +75,7 @@ class PostListView(APIView):
 
 		### 얘네가 class inner function 들! ###
     def get(self, request): 
-        posts = Post.objects.all().order_by('-like_users')
+        posts = Post.objects.annotate(like_count=Count('like_users')).order_by('-like_count')
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
         # contents = [{"id":post.id,
