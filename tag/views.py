@@ -49,13 +49,36 @@ class TagListView(APIView):
 class TagDetailView(APIView):
     def get(self, request, tag_id):
         try:
-            Tag.objects.get(id=tag_id)
-        except:
+            tag = Tag.objects.get(id=tag_id)
+        except Tag.DoesNotExist:
             return Response(
                 {"detail": "Provided tag does not exist."},
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        posts = Post.objects.filter(tags=tag_id)
+        posts = Post.objects.filter(tags=tag)  # Filter posts based on the tag
         serializer = PostSerializer(instance=posts, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def delete(self, request, tag_id):
+        try:
+            tag = Tag.objects.get(id=tag_id)
+        except Tag.DoesNotExist:
+            return Response(
+                {"detail": "Provided tag does not exist."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        # Verify if the user is authenticated before deleting the tag
+        if not request.user.is_authenticated:
+            return Response(
+                {"detail": "Authentication credentials not provided"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+
+        # Delete the tag
+        tag.delete()
+        return Response(
+            {"detail": "Tag deleted successfully."},
+            status=status.HTTP_204_NO_CONTENT,
+        )

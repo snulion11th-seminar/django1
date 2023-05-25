@@ -112,7 +112,7 @@ class LikeView(APIView):
 
         # 2
         like_list = post.like_set.filter(user=request.user)
-
+        liked = False
         # 3 like_list.count() > 0 이라는 말은, like_list가 존재한다는 말. 즉, 좋아요를 누른 적이 있다는 말.
         # 그래서 delete를 해준다. (왜냐하면 좋아요 한 사람이 버튼을 눌렀다는 건 취소하고 싶다는 뜻이니까)
         # Else는 반대라서 create 해주는 것
@@ -120,6 +120,10 @@ class LikeView(APIView):
             post.like_set.get(user=request.user).delete()
         else:
             Like.objects.create(user=request.user, post=post)
+            liked = True
 
         serializer = PostSerializer(instance=post)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        data = serializer.data
+        data["liked"] = liked
+
+        return Response(data, status=status.HTTP_200_OK)
