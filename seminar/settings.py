@@ -146,7 +146,7 @@ REST_FRAMEWORK = {
 REST_USE_JWT = True
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),  ### 1
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),  ### 1
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),  ### 1
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -155,6 +155,7 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN": "access_token",
     "REFRESH_TOKEN": "refresh_token",
 }
+
 
 CORS_ALLOWED_ORIGINS = [  # (헤더) Access-Control-Allow-Origin 에 담을 주소들
     "http://127.0.0.1:3000",
