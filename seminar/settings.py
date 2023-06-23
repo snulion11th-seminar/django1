@@ -34,6 +34,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "port-0-django-koh2xlizm45lt.sel4.cloudtype.app",
+    "web-likelion-react-koh2xlizm45lt.sel4.cloudtype.app",
 ]
 
 
